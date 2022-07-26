@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: produce-service
+  labels:
+    app: produce-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: produce-service
+  template:
+    metadata:
+      labels:
+        app: produce-service
+    spec:
+      containers:
+        - name: produce-service-container
+          image: hsuk6032/produce-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: produce-service-cs
+spec:
+  selector:
+    app: produce-service
+  ports:
+    - port: 8082
+      targetPort: 8082
+  type: ClusterIP
+

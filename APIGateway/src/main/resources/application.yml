@@ -1,0 +1,33 @@
+server:
+  port: 8090
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+#      defaultZone: http://eureka-lb.hskang:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      routes:
+        - id: EurekaClient1
+          uri: lb://EUREKACLIENT1
+          predicates:
+            - Path=/produce/**
+          filters:
+            - RewritePath=/produce/?(?<segment>.*), /$\{segment}
+
+        - id: EurekaClient2
+          uri: lb://EUREKACLIENT2
+          predicates:
+            - Path=/consume/**
+          filters:
+            - RewritePath=/consume/?(?<segment>.*), /$\{segment}

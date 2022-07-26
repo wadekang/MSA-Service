@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service-container
+          image: hsuk6032/gateway-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-lb
+spec:
+  selector:
+    app: gateway-service
+  ports:
+    - port: 8090
+      targetPort: 8090
+  type: LoadBalancer
+
+

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consume-service
+  labels:
+    app: consume-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consume-service
+  template:
+    metadata:
+      labels:
+        app: consume-service
+    spec:
+      containers:
+        - name: consume-service-container
+          image: hsuk6032/consume-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consume-service-cs
+spec:
+  selector:
+    app: consume-service
+  ports:
+    - port: 8083
+      targetPort: 8083
+  type: ClusterIP
+
