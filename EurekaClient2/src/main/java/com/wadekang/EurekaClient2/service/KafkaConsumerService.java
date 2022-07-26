@@ -6,6 +6,8 @@ import com.wadekang.EurekaClient2.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,8 @@ public class KafkaConsumerService {
 
     private final MessageRepository messageRepository;
 
-    @KafkaListener(topics = "topic1", groupId = "foo", containerFactory = "messageListener")
+//    @KafkaListener(topics = "topic1", groupId = "foo", containerFactory = "messageListener")
+    @KafkaListener(topicPartitions = {@TopicPartition(topic="topic1", partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0"))}, groupId = "foo", containerFactory = "messageListener")
     public void consume(MessageVO messageVO) {
         StringTokenizer stringTokenizer = new StringTokenizer(messageVO.getMessage());
 
